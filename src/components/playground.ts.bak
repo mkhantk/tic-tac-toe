@@ -1,0 +1,126 @@
+const gameboard = (function () {
+	const board: string[] = [];
+
+	function placeMark(coordinate: number, player: string) {
+		// check if the coordinate is occupied by another player
+		if (board[coordinate] === undefined) {
+			board[coordinate] = player;
+		} else {
+			throw new Error("unvalid mode");
+		}
+	}
+	function logBoard() {
+		return board;
+	}
+	function resetBoard() {
+		board.length = 0;
+	}
+
+	return { placeMark, logBoard, resetBoard };
+})();
+
+const player = (function () {
+	const player1 = {
+		mark: "x",
+		score: 0,
+	};
+	const player2 = {
+		mark: "o",
+		score: 0,
+	};
+
+	return { player1, player2 };
+})();
+
+const gameControl = (function () {
+	let turn = true;
+	let currentPlayer = player.player1.mark;
+	let turnCount = 1;
+	let endGame = false;
+	function checkWin(mark: string) {
+		// chec.zsk win condition
+		const winCondition = [
+			[0, 1, 2],
+			[3, 4, 5],
+			[6, 7, 8],
+			[0, 3, 6],
+			[1, 4, 7],
+			[2, 5, 8],
+			[0, 4, 8],
+			[2, 4, 6],
+		];
+		const board = gameboard.logBoard();
+		for (let array of winCondition) {
+			if (array.every((item) => board[item] === mark)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function checkDraw() {
+		// check draw function
+		console.log(turnCount);
+		if (turnCount === 9) {
+			return true;
+		}
+		return false;
+	}
+
+	function startGame() {
+		console.log("game started");
+		console.log(`it is ${player.player1.mark} turn`);
+	}
+	function resetGame() {
+		turnCount = 1;
+		endGame = false;
+		gameboard.resetBoard();
+	}
+	function playATurn() {
+		turn = !turn;
+		turnCount++;
+
+		if (turn) {
+			console.log(`it is ${player.player1.mark} turn`);
+			currentPlayer = player.player1.mark;
+		} else {
+			console.log(`it is ${player.player2.mark} turn`);
+			currentPlayer = player.player2.mark;
+		}
+	}
+	function tic(input: number) {
+		if (endGame) return;
+		try {
+			gameboard.placeMark(input, currentPlayer);
+			if (checkWin(currentPlayer)) {
+				endGame = true;
+				resetGame();
+				console.log(`${currentPlayer} wins`);
+				return;
+			}
+			if (checkDraw()) {
+				endGame = true;
+				resetGame();
+				console.log("it is a draw");
+				return;
+			}
+
+			playATurn();
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	return { startGame, tic };
+})();
+
+gameControl.startGame();
+gameControl.tic(0);
+gameControl.tic(1);
+gameControl.tic(4);
+gameControl.tic(8);
+gameControl.tic(7);
+gameControl.tic(6);
+gameControl.tic(5);
+gameControl.tic(2);
+gameControl.tic(3);
