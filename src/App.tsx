@@ -133,14 +133,10 @@ function App() {
 			<div className="text-white text-xl my-5">{status && status}</div>
 			{status && (
 				<div className="flex justify-center items-center gap-5">
-					<Button
-						variant="outline"
-						className="text-white"
-						onClick={handleReset}
-					>
+					<Button variant="outline" onClick={handleReset}>
 						Reset
 					</Button>
-					<Button variant="outline" className="text-white" onClick={handleNext}>
+					<Button variant="outline" onClick={handleNext}>
 						Next Round
 					</Button>
 				</div>
