@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./App.css";
 import usePlayground from "./components/playground";
 import { Button } from "./components/ui/button";
